@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-#asm to opcode converter
+#asm to opcode converter, linux x86 only
 
 use strict;
 use warnings;
