@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use English;
 
-my $skel_file = 'skel.asm';
+my $skel = "section .data\n\nsection .text\n\nglobal _start\n_start:\n";
 my $asm_file = 'file.asm';
 my $o_file = 'file.o';
 my $elf_file = 'file';
@@ -33,11 +33,7 @@ else{
 
 #copy the skel to a temp file in ./
 open ASM, ">", $asm_file or die $!;
-open SKEL, "<", $skel_file or die $!;
-while (<SKEL>){
-	print ASM $_;
-}
-close(SKEL);
+print ASM $skel;
 
 #add code to the copy of the skel
 while (<INPUT>){
@@ -49,7 +45,7 @@ close(INPUT);
 `nasm -g -f elf -o $o_file $asm_file`;
 `ld -o $elf_file $o_file`;
 `objdump -d $elf_file | sed 's/^[^\ ].*//g;/^\$/d' | cut -b11- | cut -b-18 > $out`;
-`rm $asm_file && rm $o_file && rm $elf_file`;
+`rm $asm_file; rm $o_file; rm $elf_file`;
 
 #write the result
 open OUT, "<", $out or die $!;
